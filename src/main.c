@@ -1,17 +1,13 @@
-/*
- *
- *
- *
- * O objetivo é reescrever a lógica de encriptação e decriptação como a anterior.
- * A função agora é encriptar e decritar arquivos ao invés de pequenos texto.
- * Deve se utilizar chunks de memória de 1024bytes tanto para a memória quanto para escrita.
- *
- * O algoritmo continuará sendo o ChaCha20.
- * Em outro momento, eu o implemente na mão.
- *
- *
- *
- */
+// O que precisa ser feito?
+//
+// 1 - Pegar o que está na memória e encriptar sem o arquivo original, ou seja, 
+// jogar dados encriptados direto no arquivo.
+//
+// 2 - Ao decriptar, fazer isso dentro da emória, sem a necessidade de gerar arquivos, 
+// e zerar os endereços após a operação
+//
+
+
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -30,6 +26,7 @@
 #define INFILE "passwords.csv"
 #define OUTFILE "passwords.enc"
 
+int read_csv();
 int write_csv(char *servico, char *usr, char *password);
 int encrypt_file(const char *master);
 int generate_key(const char *master, unsigned char *store, const unsigned char *salt);
@@ -55,13 +52,7 @@ int main(int argc, char **argv) {
         printf("Senha salva. Serviço: %s - Senha: %s\n", argv[1], argv[2]);
 
     } else if (argc == 1) {
-        printf("Digite a senha do arquivo: ");
-        
-        if (fgets(master, sizeof(master), stdin)) {
-            master[strcspn(master, "\n")] = 0;
-        }
-
-        decrypt_file(master);
+        read_csv();
 
     } else {
         printf("Uso: save <nome_do_serviço> <senha_do_serviço>.\n");
@@ -72,10 +63,10 @@ int main(int argc, char **argv) {
 
 int write_csv(char *servico, char *usr, char *password) {
     //Escrver em chunks o arquivo csv.
-    //Separador é a vírgula e ponto e vígula ao final de cada entrada
+    //Separador é a barra, e ponto e vígula ao final de cada entrada
     //ex:
-    //  nome_do_serviço, usuario, senha;
-    //  google, google1234;
+    //  nome_do_serviço|usuario|senha;
+    //  google|user|google1234;
     
     char *csv_header = "serviço|usuario|senha\n";
 
@@ -86,13 +77,18 @@ int write_csv(char *servico, char *usr, char *password) {
 
     if (access(INFILE, F_OK) == -1) {
         fp = fopen(INFILE, "w");
+        
         fputs(csv_header, fp);
-
         fputs(to_write, fp);
+        fputc('\0', fp);
+
         fclose(fp);
     } else {
-        fp = fopen(INFILE, "a");
+        fp = fopen(INFILE, "rb+");
+
+        fseek(fp, -1, SEEK_END);
         fputs(to_write, fp);
+        fputc('\0', fp);
 
         fclose(fp);
     }
@@ -101,6 +97,37 @@ int write_csv(char *servico, char *usr, char *password) {
 }
 
 int read_csv() {
+    /*
+     * A função tem o objetivo de parsear o arquivo CSV, printando-o na tela.
+     * 
+     * Implementar homorphic encryption. Mas antes, fazer o parser csv para que
+     * ao decriptar, o arquivo csv seja retido na memória e vizualizado
+     *
+     */
+
+ //   const separador = '|';
+
+    if (access(INFILE, F_OK) == -1) {
+        return -1;
+    }
+
+    FILE *open = fopen(INFILE, "r");
+    
+    int c;
+    while ((c=fgetc(open)) != '\0' || c!='\n') {
+        putc(c, stdout);
+
+        if (c == '\n') putc('\n', stdout);
+        if (c == '|') {
+            for (int i = 0; i < 3; ++i) {
+                putc(' ', stdout);
+            }
+        }
+
+        if (c == '\0') break;
+    }
+
+    fclose(open);
     return 0;
 }
 

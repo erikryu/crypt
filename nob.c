@@ -17,16 +17,12 @@ int main(int argc, char **argv) {
     if (!nob_mkdir_if_not_exists(SRC_DIR)) return 1;
     if (!nob_mkdir_if_not_exists(EXEC_DIR)) return 1;
 
-    nob_cmd_append(&compile_cmd, "cc", "-O", "-ggdb", "-Wall", "-o", MAIN_EXEC, MAIN_FILE);
+    nob_cmd_append(&compile_cmd, "cc", "-O", "-ggdb", "-Wall", "-o", MAIN_EXEC, MAIN_FILE, "-lcrypto");
     nob_cmd_append(&run_cmd, "./"MAIN_EXEC);
 
     if (argc > 0) {
         for (int i = 1; i < argc; ++i) {
-            if (argv[i][0] == '-') {
-                nob_cmd_append(&compile_cmd, argv[i]);
-            } else {
-                nob_cmd_append(&run_cmd, argv[i]);
-            }
+            nob_cmd_append(&run_cmd, argv[i]);
         }
     }
 
