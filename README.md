@@ -1,8 +1,17 @@
-# Crypt - Um gerenciador de senhas genérico     
+# Crypt - Gerenciador de Senhas
 
-Este projeto foi criado por mim para estudos na área de cibersegurança. O intuito foi criar um aplicação que envolva algo crítico para uma exploração póstuma de vulnerabilidades.
+Um gerenciador de senhas desenvolvido para fins de estudo na área de cibersegurança, com foco em exploração póstuma de vulnerabilidades.
 
-### Uso  
-Compile o o arquivo 'nob.c' com 'cc -o nob nob.c'.  
-Depois execute-o para compilar o programa e executá-lo com './nob -lcrypto'.  
-Após isso é só executar o arquivo compilado que está dentro da pasta 'exec'.
+## Como Usar
+
+### Compilação
+```bash
+cc -o nob nob.c && ./nob arg1 arg2 arg3     
+
+## Advertência (Disclaimer)
+
+Este software foi desenvolvido exclusivamente para fins de estudo e pesquisa em cibersegurança.
+
+* **Uso Ético:** O autor não se responsabiliza pelo uso indevido desta ferramenta para atividades ilícitas ou sem autorização prévia dos envolvidos.
+* **Segurança:** Por ser um projeto de estudo, não deve ser utilizado como o seu gerenciador de senhas principal para dados de produção ou contas críticas sem uma auditoria de segurança completa.
+* **Responsabilidade:** Ao utilizar este software, você assume total responsabilidade por suas ações e pelas consequências resultantes do uso das funcionalidades aqui apresentadas.

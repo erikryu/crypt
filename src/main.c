@@ -49,13 +49,13 @@ int main(int argc, char **argv) {
         
         encrypt_file(master);
         
-        printf("Senha salva. Serviço: %s - Senha: %s\n", argv[1], argv[2]);
+        printf("Senha salva.");
 
     } else if (argc == 1) {
         read_csv();
 
     } else {
-        printf("Uso: save <nome_do_serviço> <senha_do_serviço>.\n");
+        printf("Uso: save <nome_do_serviço> <usuario> <senha>.\n");
     }
 
     return 0;
