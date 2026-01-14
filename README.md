@@ -7,6 +7,7 @@ Um gerenciador de senhas desenvolvido para fins de estudo na área de cibersegur
 ### Compilação
 ```bash
 cc -o nob nob.c && ./nob arg1 arg2 arg3     
+```  
 
 ## Advertência (Disclaimer)
 
